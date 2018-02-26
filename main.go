@@ -14,7 +14,7 @@ var start *int
 var numLength *int
 var help *bool
 
-func getMoves(number int) []int {
+func GetMoves(number int) []int {
 	switch number {
 	case 0:
 		return []int{4, 6}
@@ -47,11 +47,11 @@ func init() {
 	help = flag.Bool("help", false, "Show help info")
 	flag.Parse()
 	for i := 0; i < NUMBER; i++ {
-		moves[i] = getMoves(i)
+		moves[i] = GetMoves(i)
 	}
 }
 
-func getNumberOfPossibleNumbers(position, length int) int {
+func GetNumberOfPossibleNumbers(position, length int) int {
 	if length == 0 {
 		return 0
 	}
@@ -61,7 +61,7 @@ func getNumberOfPossibleNumbers(position, length int) int {
 	length = length - 1
 	num := 0
 	for _, pos := range moves[position] {
-		num += getNumberOfPossibleNumbers(pos, length)
+		num += GetNumberOfPossibleNumbers(pos, length)
 	}
 	return num
 }
@@ -69,5 +69,5 @@ func getNumberOfPossibleNumbers(position, length int) int {
 func main() {
 	fmt.Printf("Using knight moves and a keypad\n1 2 3\n4 5 6\n7 8 9\n  0  \n")
 	fmt.Printf("Number: %d as start position and a phone number of length: %d\n", *start, *numLength)
-	fmt.Printf("The number of possible phone numbers are: %d\n", getNumberOfPossibleNumbers(*start, *numLength))
+	fmt.Printf("The number of possible phone numbers are: %d\n", GetNumberOfPossibleNumbers(*start, *numLength))
 }
