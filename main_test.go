@@ -10,6 +10,7 @@ func TestGetNumberOfPossibleNumbers(t *testing.T) {
 		length   int
 		result   int
 	}{
+		{4, 0, 0},
 		{4, 3, 6},
 		{1, 3, 5},
 		{2, 3, 4},
@@ -39,6 +40,7 @@ func TestGetMoves(t *testing.T) {
 		{7, []int{2, 6}},
 		{8, []int{1, 3}},
 		{9, []int{2, 4}},
+		{10, nil},
 	}
 
 	for _, table := range tables {
