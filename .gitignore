@@ -1,0 +1,6 @@
+# Vim related
+*~
+*.swp
+
+# Executable
+main
