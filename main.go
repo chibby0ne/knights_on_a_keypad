@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+    "os"
 )
 
 const (
@@ -50,6 +51,14 @@ func init() {
 	numLength = flag.Int("length", 3, "Telephone number length")
 	help = flag.Bool("help", false, "Show help info")
 	flag.Parse()
+    if (*start < 0) || (*start > 9) {
+        fmt.Printf("Start needs to be between 0 and 9 inclusive\n")
+        os.Exit(1)
+    }
+    if *numLength < 0 {
+        fmt.Printf("Phone number length must be larger than 0\n")
+        os.Exit(1)
+    }
 	for i := 0; i < NUMBERS; i++ {
 		moves[i] = GetMoves(i)
 	}
