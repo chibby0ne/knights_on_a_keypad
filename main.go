@@ -6,16 +6,20 @@ import (
 )
 
 const (
-	NUMBER int = 10
+    // NUMBERS are a Keypad
+    NUMBERS int = 10
 )
 
-var moves [NUMBER][]int
+var moves [NUMBERS][]int
 var start *int
 var numLength *int
 var help *bool
+var cache map[string]int
 
-func GetMoves(number int) []int {
-	switch number {
+// GetMoves returns an array containing the numbers reachable from the given
+// start number position
+func GetMoves(start int) []int {
+	switch start {
 	case 0:
 		return []int{4, 6}
 	case 1:
@@ -46,12 +50,25 @@ func init() {
 	numLength = flag.Int("length", 3, "Telephone number length")
 	help = flag.Bool("help", false, "Show help info")
 	flag.Parse()
-	for i := 0; i < NUMBER; i++ {
+	for i := 0; i < NUMBERS; i++ {
 		moves[i] = GetMoves(i)
 	}
+    cache = make(map[string]int)
 }
 
+func makeKey(position, length int) string {
+    return fmt.Sprintf("%v_%v", position, length)
+}
+
+
+// GetNumberOfPossibleNumbers returns the number of possible movies for the
+// given starting position and length of the phone number
 func GetNumberOfPossibleNumbers(position, length int) int {
+    cacheKey := makeKey(position, length)
+    val, ok := cache[cacheKey]
+    if ok {
+        return val
+    }
 	if length == 0 {
 		return 0
 	}
@@ -63,6 +80,7 @@ func GetNumberOfPossibleNumbers(position, length int) int {
 	for _, pos := range moves[position] {
 		num += GetNumberOfPossibleNumbers(pos, length)
 	}
+    cache[cacheKey] = num
 	return num
 }
 
