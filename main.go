@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-    "os"
+	"os"
 )
 
 const (
-    // NUMBERS are a Keypad
-    NUMBERS int = 10
+	// NUMBERS are a Keypad
+	NUMBERS int = 10
 )
 
 var moves [NUMBERS][]int
@@ -47,37 +47,24 @@ func GetMoves(start int) []int {
 }
 
 func init() {
-	start = flag.Int("startposition", 3, "Starting Number")
-	numLength = flag.Int("length", 3, "Telephone number length")
-	help = flag.Bool("help", false, "Show help info")
-	flag.Parse()
-    if (*start < 0) || (*start > 9) {
-        fmt.Printf("Start needs to be between 0 and 9 inclusive\n")
-        os.Exit(1)
-    }
-    if *numLength < 0 {
-        fmt.Printf("Phone number length must be larger than 0\n")
-        os.Exit(1)
-    }
 	for i := 0; i < NUMBERS; i++ {
 		moves[i] = GetMoves(i)
 	}
-    cache = make(map[string]int)
+	cache = make(map[string]int)
 }
 
 func makeKey(position, length int) string {
-    return fmt.Sprintf("%v_%v", position, length)
+	return fmt.Sprintf("%v_%v", position, length)
 }
-
 
 // GetNumberOfPossibleNumbers returns the number of possible movies for the
 // given starting position and length of the phone number
 func GetNumberOfPossibleNumbers(position, length int) int {
-    cacheKey := makeKey(position, length)
-    val, ok := cache[cacheKey]
-    if ok {
-        return val
-    }
+	cacheKey := makeKey(position, length)
+	val, ok := cache[cacheKey]
+	if ok {
+		return val
+	}
 	if length == 0 {
 		return 0
 	}
@@ -89,11 +76,23 @@ func GetNumberOfPossibleNumbers(position, length int) int {
 	for _, pos := range moves[position] {
 		num += GetNumberOfPossibleNumbers(pos, length)
 	}
-    cache[cacheKey] = num
+	cache[cacheKey] = num
 	return num
 }
 
 func main() {
+	start = flag.Int("startposition", 3, "Starting Number")
+	numLength = flag.Int("length", 3, "Telephone number length")
+	help = flag.Bool("help", false, "Show help info")
+	flag.Parse()
+	if (*start < 0) || (*start > 9) {
+		fmt.Printf("Start needs to be between 0 and 9 inclusive\n")
+		os.Exit(1)
+	}
+	if *numLength < 0 {
+		fmt.Printf("Phone number length must be larger than 0\n")
+		os.Exit(1)
+	}
 	fmt.Printf("Using knight moves and a keypad\n1 2 3\n4 5 6\n7 8 9\n  0  \n")
 	fmt.Printf("Number: %d as start position and a phone number of length: %d\n", *start, *numLength)
 	fmt.Printf("The number of possible phone numbers are: %d\n", GetNumberOfPossibleNumbers(*start, *numLength))
